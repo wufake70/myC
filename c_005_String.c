@@ -61,13 +61,14 @@ printf("\n==================一个问题=================\n");
     int start = 7;
     int len = 5;
     char substr[len + 1];
-    // s+start 是指针运算
+    // s+start 是内存地址计算
     strncpy(substr, s + start, len);
+    // 未定义行为
     substr[len] = '\0'; // 保证截取后的字符串的有效性和正确性
     printf( substr);
 
     // 验证字符串就是字符数组(一段连续的内存空间)
-    prinf("验证字符串就是字符数组(一段连续的内存空间)");
+    printf("验证字符串就是字符数组(一段连续的内存空间)");
     printf("\n");
     char w[] = "abcdefg";
     printf(w+1);
