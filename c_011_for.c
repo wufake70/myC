@@ -36,6 +36,12 @@ int main()
         }
         printf("\n");
     }
-    
+
+    printf("\n");
+    char aa[]="hello world";
+    // 这里的 i只能在for循环体内
+    for(int i=0;i<11;i++) printf("%c",aa[i]);
+    // printf(aa[i]);
     return 0;
+    
 }
