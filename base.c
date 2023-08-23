@@ -47,4 +47,22 @@
 
 14. 字符串结束标志 '\0'。
 
+15. stdlib.h的 exit函数返回0为成功，非零失败
+    #define EXIT_SUCCESS 0
+    #define EXIT_FAILURE 1
+
+16. 字符串常量不可修改,会报段错误
+    char* str="hello world";
+    strcpy(str,"niheo");
+
 */
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char* str="hello world";
+    strcpy(str,"niheo");
+
+    return 0;
+}
