@@ -4,14 +4,14 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/Program Files/OpenSSL-Win64/include/"
+                "D:/Software/OpenSSL-Win64/include/"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "D:\\SoftWareSpace\\mingw64\\bin\\gcc.exe",
+            "compilerPath": "D:/Software/MinGW/bin/gcc.exe",
             "cStandard": "c17",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "windows-gcc-x64"

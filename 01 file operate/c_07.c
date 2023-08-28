@@ -30,6 +30,9 @@ closedir(DIR *dir)：
     如果是目录文件类型（directory），
     则使用S_ISDIR()宏返回非零值。
 
+    stdio.h中操作文件函数
+        rename()
+        remove()
 */
 
 int main()

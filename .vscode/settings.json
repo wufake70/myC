@@ -7,10 +7,9 @@
         "string.h": "c",
         "aes.h": "c",
         "stdio.h": "c",
-        "evp.h": "c"
-    },
-    // "code-runner.executorMap": {
-    //     "c": "cd $dir && g++ $fileName -o $fileNameWithoutExt -I 'D:/.important/myC/' && $dir$fileNameWithoutExt",
-    // }
+        "evp.h": "c",
+        "stat.h": "c",
+        "dirent.h": "c"
+    }
     
 }
