@@ -10,6 +10,8 @@
 
     fread
     size_t read_counts=fread(arr2,sizeof(int),5,fp);
+    fread，fwrite返回数据是读或写的字节数(数据项为1时),
+    fread，返回0时表示已到达文件末尾。
 
 */
 
@@ -26,6 +28,7 @@ int main()
     // 写入二进制数据
     // 成功写入的计数器
     size_t write_counts=fwrite(arr,sizeof(int),5,fp); 
+    // printf("%d\n",(int)write_counts);
     if(write_counts!=5){
         printf("写入不完整\n");
     }else{
@@ -45,6 +48,8 @@ int main()
         printf("读取成功\n");
         for(int i=0;i<5;i++) printf("%d\t",arr2[i]);
     }
+    printf("\n");
+    system("pause");
     
     
 

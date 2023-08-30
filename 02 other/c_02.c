@@ -5,6 +5,9 @@
 #include <sys/stat.h>       // 判断是文件夹还是文件
 
 #define AES_BLOCK_SIZE 16
+/*
+aes.h 每次处理加密的数据大小只能是16字节
+*/
 
 // 加密文件函数
 void encryptFile(const char* inputFile, const char* outputFile, const unsigned char* key) {
@@ -21,7 +24,16 @@ void encryptFile(const char* inputFile, const char* outputFile, const unsigned c
 
     int bytesRead;
     // 逐个加密数据块并写入输出文件
+    // fread(),inbuffer 输入缓存，1表示数据项为1字节，
+    //      AES_BLOCK_SIZE 表示读取的数据项的数量，
+    //      infile 表示要加密的文件
     while ((bytesRead = fread(inBuffer, 1, AES_BLOCK_SIZE, inFile)) > 0) {
+        /*
+        bytesRead的作用
+            记录从输入文件中读取的字节数。
+            它用于判断是否已经到达文件末尾，
+            并且也用于控制写入输出文件的字节数。
+        */
         AES_encrypt(inBuffer, outBuffer, &aesKey);
         fwrite(outBuffer, 1, bytesRead, outFile);
     }
