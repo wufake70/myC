@@ -59,6 +59,13 @@ void scan(char *path)
             // pdf
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".pdf")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }
                 strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 pdf_counts++;
@@ -68,7 +75,13 @@ void scan(char *path)
             // txt
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".txt")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 txt_counts++;
                 continue;
@@ -77,7 +90,13 @@ void scan(char *path)
             // docx
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".docx")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 docx_counts++;
                 continue;
@@ -86,7 +105,13 @@ void scan(char *path)
             // pptx 
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".pptx")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 pptx_counts++;
                 continue;
@@ -95,7 +120,13 @@ void scan(char *path)
             // csv 
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".csv")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 csv_counts++;
                 continue;
@@ -104,7 +135,13 @@ void scan(char *path)
             // ppt 
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".ppt")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 ppt_counts++;
                 continue;
@@ -113,7 +150,13 @@ void scan(char *path)
             // jpg  
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".jpg")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 jpg_counts++;
                 continue;
@@ -122,7 +165,13 @@ void scan(char *path)
             // png  
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".png")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 png_counts++;
                 continue;
@@ -131,7 +180,13 @@ void scan(char *path)
             // gif 
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".gif")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 gif_counts++;
                 continue;
@@ -140,7 +195,13 @@ void scan(char *path)
             // jpeg 
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".jpeg")==0){
                 path_arr[path_arr_counts] = malloc(strlen(path_1) + 1);
-                strcpy(path_arr[path_arr_counts], path_1);
+                if (path_arr[path_arr_counts] == NULL) {
+                    // 内存分配失败的处理逻辑
+                    printf("内存分配失败\n");
+                    // 可以选择退出程序或采取其他处理措施
+                    // exit(1);
+                    continue;
+                }                strcpy(path_arr[path_arr_counts], path_1);
                 path_arr_counts++;
                 jpeg_counts++;
                 continue;
@@ -190,7 +251,8 @@ int main()
         exit(EXIT_FAILURE);
     }
     for(int i=0;i<path_arr_counts;i++){
-        fputs(strcat(path_arr[i],"\n"),fp);
+        fputs(path_arr[i],fp);
+        fputs("\n",fp);
     }
     fclose(fp);
 

@@ -86,7 +86,7 @@ int main() {
         }
 
         // 只加密 pdf
-        extension = strrchr(entry->d_name, '.'); // 查找最后一个点号
+        extension = strrchr(entry->d_name, '.'); // 查找最后一个点号,并返回整个后缀名
         if (extension != NULL) {
             // 比较后缀名
             if (strcmp(extension, ".pdf") != 0) {

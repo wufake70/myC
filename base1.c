@@ -9,6 +9,21 @@
 
 2. gcc 的"-L"表示 指定了在哪一个目录搜索动态链接库文件
         "-l"表示 链接哪一个动态链接库文件
+
+3. 全局变量(静态存储区空间有限)申请大内存的数组，容易出现段错误
+    char path_arr[1000][1000000];
+
+
+4.  code1:  
+      char* suffix=NULL;
+      strcpy(suffix, strrchr(entry->d_name,'.'));
+      // 会出现段错误
+
+    code2:
+      char *extension = NULL;
+      extension = strrchr(entry->d_name, '.');
+      // 可以正常运行
+    strrchar返回的指针，strcpy是操作字符串的，所以第一个会报错
       
 
 

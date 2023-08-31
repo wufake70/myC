@@ -46,11 +46,11 @@ void scan(char *path)
         // 判断文件(夹)打印名字
         if(S_ISDIR(file_stat.st_mode)){
             dir_counts++;
-            // printf("dir: %s\n",entry->d_name);
+            printf("dir: %s\n",path_1);
             scan(strcat(path_1,"/"));
             // printf("\n");
         }else{
-            // printf("file: %s\n",entry->d_name);
+            printf("file: %s\n",path_1);
             file_counts++;
             
         }
