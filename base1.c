@@ -24,6 +24,9 @@
       extension = strrchr(entry->d_name, '.');
       // 可以正常运行
     strrchar返回的指针，strcpy是操作字符串的，所以第一个会报错
+
+
+5. 编译器在编译和链接过程中使用 pthread 库。需要"-pthread"参数 告诉gcc。
       
 
 

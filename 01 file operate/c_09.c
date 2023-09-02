@@ -219,6 +219,7 @@ void scan(char *path)
 
 int main()
 {
+    system("chcp 65001 > nul");
     char path[1024];
     printf("请输入路径: ");
     scanf("%s",path);
