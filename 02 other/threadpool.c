@@ -56,12 +56,26 @@ threadpool *threadpoolinit(int number)
     return pool;
 }
 
-// 等待任务池所有任务执行完成
-void waitThreadsEnd(threadpool*pool)
+// 当前task完成
+void currentTaskEnd(threadpool*pool)
 {
-    while (pool->tasksize > 0) {
-        // sleep(1);
+    pthread_mutex_lock(&pool->mutexpool);
+    pool->finished_tasks++;
+    pthread_mutex_unlock(&pool->mutexpool);
+}
+
+// 等待任务池所有任务执行完成
+void waitThreadsEnd(threadpool*pool,int numTasks)
+{
+    // tasksize是当前的任务池的任务总数，用来判断全任务结束 不准确
+    // while (pool->tasksize > 0) {
+    //     // sleep(1);
+    // }
+    while (pool->finished_tasks<numTasks)
+    {
+        sleep(0);
     }
+    
 }
 
 void threadpoolAdd(threadpool*pool,void(*run)(void*),void*arg)

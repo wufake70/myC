@@ -18,6 +18,7 @@ typedef struct threadpool
     task*end;
     int threadNUM;//线程数量
     int tasksize;//任务数量
+    int finished_tasks;
     pthread_mutex_t mutexpool;//锁整个线程池
     pthread_cond_t notempty;//任务队列是不是空
     int shutdown;//是不是要销毁线程池，销毁为1，不销毁为0
