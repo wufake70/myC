@@ -8,6 +8,11 @@
 #include "threadpool.c"
 #include <stdatomic.h>
 
+/*
+    多线程中最好不要使用 system函数。
+
+*/
+
 threadpool* pool=NULL;
 atomic_int file_counts=0,dir_counts=0;
 
@@ -17,7 +22,7 @@ void scan(void*arg)
     DIR *dir=opendir(path);
     if(dir==NULL){
         printf("%s\t文件夹打开失败T_T\n",path);
-        exit(1);
+        exit(1);// system("pause");
     }
 
     struct dirent *entry;
@@ -65,7 +70,9 @@ void scan(void*arg)
 
 int main()
 {
-    pool=threadpoolinit(100);
+    // system("chcp 65001 > nul");  对线程池有影响，不要使用
+
+    pool=threadpoolinit(10);
     if(pool==NULL){
         printf("无法创建线程池T_T!");
         exit(1);
@@ -89,9 +96,6 @@ int main()
     threadpooldestroy(pool);
     printf("该路径下共扫描到 %d个文件夹,%d个文件。\n共耗时 %d秒。\n",dir_counts,file_counts,(int)(t2-t1));
 
-    // system("pause");
-
-
-
+    system("pause");
     return 0;
 }
