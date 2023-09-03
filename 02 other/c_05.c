@@ -53,22 +53,17 @@ int main()
     for (int i = 0; i < numTasks; i++) {
         int* taskNumber = (int*)malloc(sizeof(int));
         *taskNumber = i;
+        // 注意taskNumber 是在堆上的。
         threadpoolAdd(pool, taskFun, taskNumber);
     }
 
-    waitThreadsEnd(pool,numTasks);
-    // sleep(1);
+    waitThreadsEnd(pool);
+    printf("%d\n",pool->tasksize);
     threadpooldestroy(pool);
     time_t t2=time(NULL);
 
     printf("counts_0: %d\tcounts_1: %d\t timer: %d\n",counts_0,counts_1,(int)(t2-t1));
 
     system("pause");
-    return 0;
-
-    
-    
-
-
     return 0;
 }

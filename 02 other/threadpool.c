@@ -22,7 +22,7 @@ void *worker(void *arg)
         //从任务队列中取出任务
         task *t = pool->first;
         pool->first = t->next;
-        pool->tasksize--;
+        // pool->tasksize--;
         pthread_mutex_unlock(&pool->mutexpool);//i解锁让其他线程去执行其他任务
         t->run(t->arg);
         free(t);
@@ -56,28 +56,6 @@ threadpool *threadpoolinit(int number)
     return pool;
 }
 
-// 当前task完成
-void currentTaskEnd(threadpool*pool)
-{
-    pthread_mutex_lock(&pool->mutexpool);
-    pool->finished_tasks++;
-    pthread_mutex_unlock(&pool->mutexpool);
-}
-
-// 等待任务池所有任务执行完成
-void waitThreadsEnd(threadpool*pool,int numTasks)
-{
-    // tasksize是当前的任务池的任务总数，用来判断全任务结束 不准确
-    // while (pool->tasksize > 0) {
-    //     // sleep(1);
-    // }
-    while (pool->finished_tasks<numTasks)
-    {
-        sleep(0);
-    }
-    
-}
-
 void threadpoolAdd(threadpool*pool,void(*run)(void*),void*arg)
 {
     if(pool->shutdown)//线程池已经被关闭
@@ -103,6 +81,29 @@ void threadpoolAdd(threadpool*pool,void(*run)(void*),void*arg)
     pthread_cond_signal(&pool->notempty);//唤醒阻塞的线程
     pthread_mutex_unlock(&pool->mutexpool);
 }
+
+// 当前task完成
+void currentTaskEnd(threadpool*pool)
+{
+    pthread_mutex_lock(&pool->mutexpool);
+    pool->finished_tasks++;
+    pthread_mutex_unlock(&pool->mutexpool);
+}
+
+// 等待任务池所有任务执行完成
+void waitThreadsEnd(threadpool*pool)
+{
+    // tasksize是当前的任务池的任务总数，用来判断全任务结束 不准确
+    // while (pool->tasksize > 0) {
+    //     // sleep(1);
+    // }
+    while (pool->finished_tasks<pool->tasksize)
+    {
+        // sleep(3);
+    }
+    
+}
+
 int threadpooldestroy(threadpool*pool)
 {
     if(pool==NULL)

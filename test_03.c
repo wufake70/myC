@@ -1,19 +1,14 @@
 #include <stdio.h>
-#include <String.h>
+#include <windows.h>
+#include <dirent.h>
 
-int main()
-{
-    char a[10][10]={"hello"};
-    printf("%s\n",a[0]);
-    strcpy(a[3],"hhhh");
-    printf("%s\n",a[3]);
-
-    // char str[100];
-    // printf("请输入: ");
-    // scanf("%s",str);
-    // // printf("%s\n",str);
-    // char* str2=strchr(str,'.');
-    // printf("pdf? %s\n",strcmp(str2,".pdf")==0?"存在":"无");
+int main() {
+    const char* path = "D:/.important/myC/02 other/"; // 带有空格的路径
+    DIR* dir=opendir(path);
+    if(path==NULL){
+        printf("T_T\n");
+    }
+    printf("ok\n");
 
     return 0;
 }

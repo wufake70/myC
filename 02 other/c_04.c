@@ -37,7 +37,7 @@ int main() {
     }
 
     // 等待任务池所有任务执行完成
-    waitThreadsEnd(pool,numTasks);
+    waitThreadsEnd(pool);
 
     // 销毁线程池
     threadpooldestroy(pool);
