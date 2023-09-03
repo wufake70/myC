@@ -43,6 +43,9 @@ threadpool *threadpoolinit(int number)
     pool->tasksize=0;
     pool->first = NULL;
     pool->end = NULL;
+
+    pool->finished_tasks = 0; // 完成的task 赋值为0
+
     //锁和条件变量初化
     pthread_mutex_init(&pool->mutexpool, NULL);
     pthread_cond_init(&pool->notempty, NULL);
@@ -83,25 +86,21 @@ void threadpoolAdd(threadpool*pool,void(*run)(void*),void*arg)
 }
 
 // 当前task完成
-void currentTaskEnd(threadpool*pool)
+void currentTaskEnd(threadpool* pool)
 {
     pthread_mutex_lock(&pool->mutexpool);
     pool->finished_tasks++;
     pthread_mutex_unlock(&pool->mutexpool);
+    // pthread_cond_signal(&pool->notempty); // 唤醒可能阻塞在任务完成上的线程
 }
 
 // 等待任务池所有任务执行完成
-void waitThreadsEnd(threadpool*pool)
+void waitThreadsEnd(threadpool* pool)
 {
-    // tasksize是当前的任务池的任务总数，用来判断全任务结束 不准确
-    // while (pool->tasksize > 0) {
-    //     // sleep(1);
-    // }
-    while (pool->finished_tasks<pool->tasksize)
+    while (pool->finished_tasks < pool->tasksize)
     {
-        // sleep(3);
+        // sleep(1);
     }
-    
 }
 
 int threadpooldestroy(threadpool*pool)

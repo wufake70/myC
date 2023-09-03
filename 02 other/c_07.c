@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <string.h>
 #include <time.h>
 #include <dirent.h>
@@ -14,7 +14,7 @@
 */
 
 threadpool* pool=NULL;
-char* path_arr[1000000];
+char* path_arr[10000000];
 
 atomic_int path_arr_index=0,
     txt_counts=0,
@@ -169,6 +169,8 @@ void scan(void*arg)
             }
             // png  
             if(strrchr(entry->d_name,'.')&&strcmp(strrchr(entry->d_name,'.'),".png")==0){
+                // path_arr 不能存储太多数据，这里png 高达12万，存不下会闪退
+                if(atomic_load(&png_counts)>2000) continue;
                 pthread_mutex_lock(&pool->mutexpool);
                 path_arr[path_arr_index] = malloc(strlen(path_1) + 1);
                 while(path_arr[path_arr_index] == NULL){
@@ -225,7 +227,7 @@ int main()
 {
     // system("chcp 65001 > nul"); 对线程池有影响，不要使用
 
-    pool=threadpoolinit(16);
+    pool=threadpoolinit(50);
     if(pool==NULL){
         printf("无法创建线程池T_T!");
         exit(1);
@@ -278,8 +280,6 @@ int main()
     }
 
     system("pause");
-
-
 
     return 0;
 }

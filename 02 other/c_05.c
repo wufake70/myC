@@ -58,6 +58,7 @@ int main()
     }
 
     waitThreadsEnd(pool);
+    sleep(2);
     printf("%d\n",pool->tasksize);
     threadpooldestroy(pool);
     time_t t2=time(NULL);

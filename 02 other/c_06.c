@@ -21,7 +21,7 @@ void scan(void*arg)
     char* path=(char*)arg;
     DIR *dir=opendir(path);
     if(dir==NULL){
-        printf("%s\t文件夹打开失败T_T\n",path);
+        printf("%s\fail open DIR T_T\n",path);
         exit(1);// system("pause");
     }
 
@@ -72,21 +72,21 @@ int main()
 {
     // system("chcp 65001 > nul");  对线程池有影响，不要使用
 
-    pool=threadpoolinit(10);
+    pool=threadpoolinit(50);
     if(pool==NULL){
-        printf("无法创建线程池T_T!");
+        printf("Unable make threadpool T_T!");
         exit(1);
     }
 
     char* path=malloc(sizeof(char)*1024);
-    printf("请输入路径: ");
+    printf("input path: ");
     scanf("%[^\n]",path);
     if(path[strlen(path)-1]!='/'){
         sprintf(path,"%s/",path);
     }
 
     time_t t1=time(NULL),t2;
-    printf("请稍等...\n");
+    printf("wait...\n");
     scan(path);
     waitThreadsEnd(pool);
     t2=time(NULL);
@@ -94,8 +94,8 @@ int main()
     sleep(2);
 
     threadpooldestroy(pool);
-    printf("该路径下共扫描到 %d个文件夹,%d个文件。\n共耗时 %d秒。\n",dir_counts,file_counts,(int)(t2-t1));
+    printf("the path %d DIRs,%d FILEs.\ntime %d s.\n",dir_counts,file_counts,(int)(t2-t1));
 
-    system("pause");
+    // system("pause");
     return 0;
 }

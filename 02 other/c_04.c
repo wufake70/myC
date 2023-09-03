@@ -42,6 +42,7 @@ int main() {
     // 销毁线程池
     threadpooldestroy(pool);
     system("pause");
+    printf("%d %d\n",pool->finished_tasks,pool->tasksize);
 
     return 0;
 }
