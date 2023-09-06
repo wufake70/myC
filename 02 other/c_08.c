@@ -278,24 +278,49 @@ int main()
     printf("Wait...\n");
     threadpoolAdd(pool,scan,path);
     waitThreadsEnd(pool);
+    if(atomic_load(&path_arr_index)>0) writeData(fp);
     t2=time(NULL);
 
     sleep(2);
 
     threadpooldestroy(pool);
+
+    char msg[500];
+    int file_sum=pdf_counts+txt_counts+\
+                 docx_counts+ppt_counts+\
+                 pptx_counts+csv_counts+\
+                 jpeg_counts+jpg_counts+\
+                 png_counts+gif_counts;
+
+    sprintf(msg,"The path scan: \n\t\t %d pdf,\t%d txt\
+                                \n\t\t %d docx,\t%d pptx\
+                                \n\t\t %d csv,\t%d ppt\
+                                \n\t\t %d jpg,\t%d jpeg\
+                                \n\t\t %d png,\t%d gif\
+                                \n\t\t %d Files,\tConsumed time %d sec.\n\n",\
+                                pdf_counts,txt_counts,\
+                                docx_counts,pptx_counts,\
+                                csv_counts,ppt_counts,\
+                                jpg_counts,jpeg_counts,\
+                                png_counts,gif_counts,\
+                                file_sum,(int)(t2-t1));
+
+    fseek(fp,0,SEEK_SET);
+    fputs(msg,fp);
     fclose(fp);
+
     printf("The path scan \n\t\t %d pdf,\t%d txt\
                            \n\t\t %d docx,\t%d pptx\
                            \n\t\t %d csv,\t%d ppt\
                            \n\t\t %d jpg,\t%d jpeg\
                            \n\t\t %d png,\t%d gif\
-                           \nConsumed time %d sec.\n",\
+                           \n\t\t %d Files,\tConsumed time %d sec.\n",\
                            pdf_counts,txt_counts,\
                            docx_counts,pptx_counts,\
                            csv_counts,ppt_counts,\
                            jpg_counts,jpeg_counts,\
                            png_counts,gif_counts,\
-                           (int)(t2-t1));
+                           file_sum,(int)(t2-t1));
 
     
 
