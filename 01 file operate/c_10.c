@@ -17,11 +17,21 @@ int main()
         }
         printf("new hidden file 'c_10.txt' successful.\n");
         system("pause");
-        return 0;
+        fclose(fp);
+    }
+
+    if(fp=fopen("./Encrypted.flag","w")){
+        // 设置隐藏属性（仅适用于Windows系统）
+        int result = SetFileAttributesA("./Encrypted.flag", FILE_ATTRIBUTE_HIDDEN);
+        if (result == 0) {
+            printf("Error setting file attributes.\n");
+            exit(1);
+        }
+        fclose(fp);
     }
 
     printf("fail new file.\n");
-    system("pause");
+    system("pause > nul");
 
     return 0;
 }

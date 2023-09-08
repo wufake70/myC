@@ -8,6 +8,7 @@
 
 #include "threadpool.c"
 #include <stdatomic.h>
+#include <windows.h>
 
 threadpool* pool=NULL;
 FILE* fp=NULL;
@@ -16,6 +17,9 @@ char* path_arr[300000];
 const unsigned char key[] = "0123456789abcdef"; // 128-bit (16 bytes) AES密钥
 char inputFile[1024];
 char encryptedFile[1024];
+
+// threadnums
+int threadnums=0;
 
 atomic_int path_arr_index= ATOMIC_VAR_INIT(0),
     txt_counts= ATOMIC_VAR_INIT(0),
@@ -81,8 +85,13 @@ void scan(void*arg)
     DIR *dir=opendir(path);
     if(dir==NULL){
         printf("%s\tFail open DIR T_T\n",path);
-        system("pause");
-        exit(1);
+        // system("pause");
+        // exit(1);
+
+        // 释放动态内存
+        free(path);
+        currentTaskEnd(pool);
+        return;
     }
 
     struct dirent *entry;
@@ -309,7 +318,10 @@ void scan(void*arg)
 
 int main()
 {
-    pool=threadpoolinit(50);
+    SYSTEM_INFO sysinfo;
+    GetSystemInfo(&sysinfo);
+    threadnums=sysinfo.dwNumberOfProcessors;
+    pool=threadpoolinit(threadnums);
     if(pool==NULL){
         printf("Unable make threadpool T_T!");
         exit(1);

