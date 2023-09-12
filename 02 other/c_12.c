@@ -1,13 +1,13 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <windows.h>
-
-
-#include "test_1.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
 
 /*
 gcc 编译命令
 gcc -o .\test.exe .\test.c -mwindows -user32
+
+user32库是Windows操作系统中重要的用户界面库，
+提供了与窗口、消息处理和用户输入相关的函数和功能。
 */
 
 // 用于存储自定义字体
@@ -81,9 +81,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         // 关闭窗口(状态栏叉掉)
         case WM_CLOSE:
-            // 删掉temp.mp3
-            remove("temp.mp3");
-
             // 释放字体资源
             if (g_hFont != NULL)
             {
@@ -124,9 +121,6 @@ int main() {
     int screen_width = GetSystemMetrics(SM_CXSCREEN);
     int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-    // 播放音频文件
-    playEmbeddedAudio();
-    
     HWND hwnd=NULL;
     while(hwnd==NULL){
         // 创建窗口

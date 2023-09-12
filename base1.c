@@ -35,4 +35,16 @@
 
 7. gcc "-mwindows" 表示不显示cmd窗口运行程序。
 
+8. 给exe设置图片
+    准备图标文件：首先，你需要一个图标文件（通常是ICO文件格式）。确保图标文件的尺寸和位深度符合你的需求。
+    创建资源文件：创建一个文本文件，使用扩展名为.rc（例如icon.rc），并将以下内容添加到文件中：
+      1 ICON "path/to/your/icon.ico"
+    将"path/to/your/icon.ico"替换为图标文件的实际路径。
+
+    生成.res文件：使用windres工具将资源文件编译为.res文件。在命令行中运行以下命令：
+      windres icon.rc -O coff -o icon.res
+    
+    gcc 将icon和c源码一起编译
+      gcc -o test.exe test.c icon.res -....
+
 */
