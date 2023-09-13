@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <stdlib.h>
 #include "Yametekudasai.h"
+// #include "NiGanMa.h"
 /*
 需要 -lwinmm参数
 
