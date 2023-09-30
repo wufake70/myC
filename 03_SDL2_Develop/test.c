@@ -16,26 +16,25 @@ SDL_Renderer* renderer;
 SDL_Event event;
 SDL_bool quit = SDL_FALSE;
 
-void displayText() {
-    TTF_Font* font = TTF_OpenFont("simhei.ttf", 24); // 使用合适的字体文件路径和字号
+void displayText(int x,int y,const char* str,int fontsize) {
+    TTF_Font* font = TTF_OpenFont("simhei.ttf", fontsize); // 使用合适的字体文件路径和字号
     SDL_Color color = {255, 0, 0}; // 文本颜色：红色
 
-    SDL_Surface* surface = TTF_RenderUTF8_Solid(font, "你好世界!", color);
+    SDL_Surface* surface = TTF_RenderUTF8_Solid(font, str, color);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-    SDL_Rect textRect = { WINDOW_WIDTH / 2 - 60, 10, surface->w, surface->h };
-
+    SDL_Rect textRect = { x,y, surface->w, surface->h };
     SDL_RenderCopy(renderer, texture, NULL, &textRect); // 绘制文本
 
     // 释放表面和纹理资源
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
-
     TTF_CloseFont(font); // 关闭字体
 }
 
 int word_counts=1024;
+int current_word_counts=0;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    char numstr[10]="";
     char* input=malloc(word_counts*sizeof(char));// 存储用户输入的字符串
     if(input==NULL){
         printf("Fail get memory\n");
@@ -106,11 +105,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 case SDLK_RETURN:
                     // 清空输入字符串
                     input[0] = '\0';
+                    current_word_counts=0;
                     break;
                 case SDLK_BACKSPACE:
                     // 删除输入字符串最后一个字符
                     if (strlen(input) > 0) {
                         input[strlen(input) - 1] = '\0';
+                        current_word_counts--;
                     }
                     break;
                 }
@@ -136,6 +137,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     free(temp);
                 }
                 strcat(input, event.text.text);
+                current_word_counts++;
                 break;
             }
         }
@@ -149,10 +151,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         if (strlen(input)) {
             // 根据字体和输入文本创建表面,可自动换行
             SDL_Surface* surface = TTF_RenderText_Blended_Wrapped(font, input, color, WINDOW_WIDTH-10);
-
             // 创建纹理
             SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-
             // 渲染纹理
             SDL_Rect textRect = { 5, 70, surface->w, surface->h };
             SDL_RenderCopy(renderer, texture, NULL, &textRect);
@@ -161,7 +161,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             SDL_DestroyTexture(texture);
         }
         // 其他文本内容
-        displayText();
+        displayText(WINDOW_WIDTH/2-80,20,"你好，世界！",30);
+        sprintf(numstr,"%d",current_word_counts);
+        displayText(11,WINDOW_HEIGHT-21,numstr,20);
 
         // 更新渲染器
         SDL_RenderPresent(renderer);
