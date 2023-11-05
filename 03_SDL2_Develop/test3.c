@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <wchar.h>
 #include <time.h>
-#define FONT_SIZE 20
+#define FONT_SIZE 20 
 #define LINE_SPACING 5
 
 // gcc .\test2.c -o .\test2.exe -user32 -mwindows
