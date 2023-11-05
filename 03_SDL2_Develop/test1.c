@@ -9,6 +9,9 @@
 #define FONT_SIZE 24
 #define LINE_SPACING 5
 
+// 编译命令: gcc .\test1.c -o .\test1.exe -user32 -mwindows
+
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 HFONT font = NULL;
@@ -113,11 +116,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 if (wmId == 1)
                 {
                     // 获取编辑框的文本内容
-                    HWND hwndEdit = (HWND)lParam;
                     char buffer[GetWindowTextLengthA(hwndEdit)+1]; // 根据需要调整缓冲区大小
                     GetWindowTextA(hwndEdit, buffer, sizeof(buffer));
                     char numstr[10];
-
+                    MessageBox(NULL, buffer, "警告", MB_ICONWARNING | MB_OK);
                     // 处理编辑框的文本内容变化
                     sprintf(numstr, "%d", strlen(buffer)); // 将整数转换为字符串
                     SetWindowText(hwndCount, numstr); // 更新静态文本控件的文本内容
